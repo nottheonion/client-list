@@ -25,15 +25,19 @@ public class ClientService {
     public Optional<Client> getClientById(Long id) {
         try {
             return clientRepository.findById(id);
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new RuntimeException("Error retrieving client", e);
         }
     }
 
     @Transactional
     public Page<Client> getAllClientInPage(int pageNumber) {
-        Pageable pageable = PageRequest.of(pageNumber, 10, Sort.by(Sort.Direction.ASC, "id"));
-        return clientRepository.findAll(pageable);
+        try {
+            Pageable pageable = PageRequest.of(pageNumber, 10, Sort.by(Sort.Direction.ASC, "id"));
+            return clientRepository.findAll(pageable);
+        } catch (Exception e) {
+            throw new RuntimeException("Error get all client in page", e);
+        }
     }
 
     @Transactional
@@ -62,6 +66,10 @@ public class ClientService {
     }
 
     public String testThirdPartyApi() {
-        return postClient.getPosts();
+        try {
+            return postClient.getPosts();
+        } catch (Exception e) {
+            throw new RuntimeException("Error test third party api", e);
+        }
     }
 }
